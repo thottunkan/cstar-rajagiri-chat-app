@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title id="title">
+		Chat
+	</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.10.1/qs.js" integrity="sha512-DkxSbrm2xe6jcerSwLA4vS8WV7UarP44UjrS+Yp2MRFE2md2qPLpZVTyoxHrM2mvZ2Ft2zhPUMplV20zNFXriQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<style>
+		body{
+			
+			height: 100vh;
+			background-image: linear-gradient(to right top, #00bb32, #00ae40, #00a14a, #049450, #198754);
+			
+
+		}
+
+		*{
+	box-sizing:border-box;
+}
+body{
+	background-color:#abd9e9;
+	font-family:Arial;
+}
+#container{
+	width:750px;
+	height:800px;
+	background:#eff3f7;
+	margin:0 auto;
+	font-size:0;
+	border-radius:5px;
+	overflow:hidden;
+}
+aside{
+	width:260px;
+	height:800px;
+	background-color:#049450;
+	display:inline-block;
+	font-size:15px;
+	vertical-align:top;
+}
+main{
+	width:490px;
+	height:800px;
+	display:inline-block;
+	font-size:15px;
+	vertical-align:top;
+}
+
+aside header{
+	padding:30px 20px;
+}
+aside input{
+	width:100%;
+	height:50px;
+	line-height:50px;
+	padding:0 50px 0 20px;
+	background-color:#00a14a;
+	border:none;
+	border-radius:3px;
+	color:#fff;
+	background-image:url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/ico_search.png);
+	background-repeat:no-repeat;
+	background-position:170px;
+	background-size:40px;
+}
+aside input::placeholder{
+	color:#fff;
+}
+aside ul{
+	padding-left:0;
+	margin:0;
+	list-style-type:none;
+	overflow-y:scroll;
+	height:690px;
+}
+aside li{
+	padding:10px 0;
+}
+aside li:hover{
+	background-color:#00a14a;
+}
+h2,h3{
+	margin:0;
+}
+aside li img{
+	border-radius:50%;
+	margin-left:20px;
+	margin-right:8px;
+}
+aside li div{
+	display:inline-block;
+	vertical-align:top;
+	margin-top:12px;
+}
+aside li h2{
+	font-size:14px;
+	color:#fff;
+	font-weight:normal;
+	margin-bottom:5px;
+}
+aside li h3{
+	font-size:12px;
+	color:#7e818a;
+	font-weight:normal;
+}
+
+.status{
+	width:8px;
+	height:8px;
+	border-radius:50%;
+	display:inline-block;
+	margin-right:7px;
+}
+.green{
+	background-color:#58b666;
+}
+.orange{
+	background-color:#ff725d;
+}
+.blue{
+	background-color:#6fbced;
+	margin-right:0;
+	margin-left:7px;
+}
+
+main header{
+	height:110px;
+	padding:30px 20px 30px 40px;
+}
+main header > *{
+	display:inline-block;
+	vertical-align:top;
+}
+main header img:first-child{
+	border-radius:50%;
+}
+main header img:last-child{
+	width:24px;
+	margin-top:8px;
+}
+main header div{
+	margin-left:10px;
+	margin-right:145px;
+}
+main header h2{
+	font-size:16px;
+	margin-bottom:5px;
+}
+main header h3{
+	font-size:14px;
+	font-weight:normal;
+	color:#7e818a;
+}
+
+#chat{
+	padding-left:0;
+	margin:0;
+	list-style-type:none;
+	overflow-y:scroll;
+	height:535px;
+	border-top:2px solid #fff;
+	border-bottom:2px solid #fff;
+}
+#chat li{
+	padding:10px 30px;
+}
+#chat h2,#chat h3{
+	display:inline-block;
+	font-size:13px;
+	font-weight:normal;
+}
+#chat h3{
+	color:#bbb;
+}
+#chat .entete{
+	margin-bottom:5px;
+}
+#chat .message{
+	padding:20px;
+	color:#fff;
+	line-height:25px;
+	max-width:90%;
+	display:inline-block;
+	text-align:left;
+	border-radius:5px;
+}
+#chat .me{
+	text-align:right;
+}
+#chat .you .message{
+	background-color:#58b666;
+}
+#chat .me .message{
+	background-color:#6fbced;
+}
+#chat .triangle{
+	width: 0;
+	height: 0;
+	border-style: solid;
+	border-width: 0 10px 10px 10px;
+}
+#chat .you .triangle{
+		border-color: transparent transparent #58b666 transparent;
+		margin-left:15px;
+}
+#chat .me .triangle{
+		border-color: transparent transparent #6fbced transparent;
+		margin-left:375px;
+}
+
+main footer{
+	height:155px;
+	padding:20px 30px 10px 20px;
+}
+main footer textarea{
+	resize:none;
+	border:none;
+	display:block;
+	width:100%;
+	height:80px;
+	border-radius:3px;
+	padding:20px;
+	font-size:13px;
+	margin-bottom:13px;
+}
+main footer textarea::placeholder{
+	color:#ddd;
+}
+main footer img{
+	height:30px;
+	cursor:pointer;
+}
+main footer a{
+	text-decoration:none;
+	text-transform:uppercase;
+	font-weight:bold;
+	color:#6fbced;
+	vertical-align:top;
+	margin-left:333px;
+	margin-top:5px;
+	display:inline-block;
+}
+body{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin: auto;
+}
+
+</style>
+</head>
+<body>
+	<div id="container">
+		
+	<aside>
+		<header>
+			<input type="text" placeholder="search">
+		</header>
+		<ul id="usersList">
+			
+		</ul>
+	</aside>
+	<main>
+		<header>
+			<img width="50" height="50" src="https://th.bing.com/th/id/R4dbcba105f3c2ef70e4de74666a081dd?rik=LNspXdlfRwHCSQ&riu=http%3a%2f%2fwww.justkerala.in%2fwp-content%2fuploads%2f2012%2f10%2fRajagiri-Centre-for-Business-Studies-logo.jpg&ehk=QlBHfMteh3hvnGD519bJPK8LXdYcPMVyxh1oBFHxVjo%3d&risl=&pid=ImgRaw" alt="">
+			<div>
+				<h2>RCSS</h2>
+				<h3 id="roomname">CSTAR COMMUNITY </h3>
+			</div>
+			<img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/ico_star.png" alt="">
+		</header>
+		<ul id="chat">
+			
+		</ul>
+		<footer>
+			<input type="text" placeholder="Type your message" class="form-control p-4" id="ta"/>
+			<img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/ico_picture.png" alt="">
+			<img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/ico_file.png" alt="">
+			<a href="#" onclick="send(event)">Send</a>
+		</footer>
+	</main>
+</div>
+<div hidden>
+	<p id="displayName">{{this.displayName}}</p>
+	<p id="photoURL">{{this.photoURL}}</p>
+	<p id="room">{{this.room}}</p>
+	<p id="uid">{{this.uid}}</p>
+	<p id="email">{{this.email}}</p>
+</div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js" integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+<script src="https://cdn.socket.io/4.0.1/socket.io.js"></script>
+<script src="https://momentjs.com/downloads/moment.js"></script>
+<script>
+
+	window.addEventListener('contextmenu',function(e) {
+		e.preventDefault();
+	});
+	
+	const socket = io();
+
+	const name = document.getElementById('displayName').innerHTML;
+	const room = document.getElementById('room').innerHTML;
+	const photoURL = document.getElementById('photoURL').innerHTML;
+
+	var msgobj = {
+					message:'',
+					userid:uid,
+					username:name,
+					chatroom:room,
+					email:email,
+					photoURL:photoURL,
+					time:moment().format('h:mm a') 
+				}  
+
+////////////////////////////////////////////
+    //list users
+
+	socket.on('roomUsers',function(roomUsers){
+		var room = roomUsers.room;
+		var users = roomUsers.users;
+		var usersList = document.getElementById('usersList');
+		var userelement = document.createElement('LI');
+		document.getElementById('roomname').innerHTML = room;
+		document.getElementById('title').innerHTML = room;
+		var out = ``;
+		
+			  
+		
+		for(var i=0 ; i<users.length;i++){
+			
+			out=`
+				<img width='50' height='50' src="${photoURL}" alt="">
+				<div>
+					<h2>${users[i].username}</h2>
+					<h3 style='color:white;'>
+						<span class="status green"></span>
+						online
+					</h3>
+				</div>
+			`;
+		}
+		userelement.innerHTML = out;	
+		usersList.appendChild(userelement);
+	});	
+
+////////////////////////////////////////////
+	//join to room
+	socket.emit('joinRoom',msgobj);
+///////////////////////////////////////////
+	//get message
+	socket.on('message',function(msg) {
+
+				var audio = new Audio('https://quz1yp-a.akamaihd.net/downloads/ringtones/files/mp3/oppo-trickle-30288.mp3')	;
+				audio.addEventListener("canplay",function(){ audio.play(); });
+				var msgelement = document.createElement('LI');
+				msgelement.classList.add('you');
+				msgelement.innerHTML =`
+						<div class="entete">
+							<span class="status green"></span>
+							<h2>${msg.username}</h2>
+							<h3>${msg.time}, Today</h3>
+							
+						</div>
+						<div class="triangle"></div>
+						<div class="message">
+							${msg.text}
+						</div>
+					`;
+				chat.appendChild(msgelement);
+				
+				var scrollingElement = (document.getElementById('chat'));
+				scrollingElement.scrollTop = scrollingElement.scrollHeight;
+				
+
+
+	});
+/////////////////////////////////////
+//send message 
+
+	var chat = document.getElementById('chat');
+
+	function send(e) {
+		e.preventDefault();
+		
+		
+		
+		var msg = document.getElementById('ta').value;
+		
+		
+		if(msg != ''){
+			var msgobj = {
+					message:msg,
+					username:name,
+					chatroom:room,
+					time:moment().format('h:mm a') 
+			}
+
+			socket.emit('chatMessage',msgobj);
+			
+			
+			var msgelement = document.createElement('LI');
+			msgelement.classList.add('me');
+			msgelement.innerHTML =`
+					<div class="entete">
+						
+						<h2>${name}</h2>
+						<h3>${msgobj.time}, Today</h3>
+						<span class="status blue"></span>
+					</div>
+					<div class="triangle"></div>
+					<div class="message">
+						${msgobj.message}
+					</div>
+				`;
+			chat.appendChild(msgelement);
+			document.getElementById('ta').value = '';
+			var scrollingElement = (document.getElementById('chat'));
+			scrollingElement.scrollTop = scrollingElement.scrollHeight;
+		}else{
+			alert("Type message");
+		}
+		
+		
+	}
+
+
+	var ta = document.getElementById('ta');
+	ta.addEventListener('keypress', function (e) {
+		
+	    if (e.key === 'Enter') {
+				var msg = document.getElementById('ta').value;
+				
+				if(msg != ''){
+					var msgobj = {
+						message:msg,
+						username:name,
+						chatroom:room,
+						time:moment().format('h:mm a') 
+					}
+					socket.emit('chatMessage',msgobj);
+
+					var msgelement = document.createElement('LI');
+					msgelement.classList.add('me');
+					msgelement.innerHTML =`
+							<div class="entete">
+								
+								<h2>${msgobj.username}</h2>
+								<h3>${msgobj.time}, Today</h3>
+								<span class="status blue"></span>
+							</div>
+							<div class="triangle"></div>
+							<div class="message">
+								${msgobj.message}
+							</div>
+						`;
+					chat.appendChild(msgelement);
+					document.getElementById('ta').value = '';
+					var scrollingElement = (document.getElementById('chat'));
+					scrollingElement.scrollTop = scrollingElement.scrollHeight;
+				}else{
+					alert("Type Message");
+				}	
+	    }
+	});
+
+
+	socket.on('messageToAll',function(msgobj) {
+		//socket.emit('chatMessage',msg);
+		var audio = new Audio('https://quz1yp-a.akamaihd.net/downloads/ringtones/files/mp3/oppo-trickle-30288.mp3')	;
+		audio.addEventListener("canplay",function(){ audio.play(); });
+				var msgelement = document.createElement('LI');
+				msgelement.classList.add('you');
+				msgelement.innerHTML =`
+						<div class="entete">
+							<span class="status green"></span>
+							<h2>${msgobj.username}</h2>
+							<h3>${msgobj.time}, Today</h3>
+							
+						</div>
+						<div class="triangle"></div>
+						<div class="message">
+							${msgobj.message}
+						</div>
+					`;
+				chat.appendChild(msgelement);
+			var scrollingElement = (document.getElementById('chat'));
+			scrollingElement.scrollTop = scrollingElement.scrollHeight;
+
+	});
+</script>
+</html>

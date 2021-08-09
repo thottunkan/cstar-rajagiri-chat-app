@@ -1,0 +1,139 @@
+
+const firebasecfg = require("../utils/firebaseCfg")
+
+var app = require('../app');
+var debug = require('debug')('chatroomdev:server');
+var http = require('http');
+const socketio = require('socket.io')
+const formatMessage = require("../utils/messages")
+const {userJoin,getCurrentUser,getRoomUsers} = require("../utils/users")
+
+/**
+ * Get port from environment and store in Express.
+ */
+
+var port = normalizePort(process.env.PORT || '3030');
+app.set('port', port);
+
+/**
+ * Create HTTP server.
+ */
+const bot = "Rajagiri Bot"
+var server = http.createServer(app);
+const io = socketio(server)
+
+io.on('connection',(socket)=>{
+  var obj = {};
+    socket.on('joinRoom',(msgobj)=>{
+      obj = msgobj;
+      var username = msgobj.username;
+      var room = msgobj.chatroom;
+      var user = userJoin(socket.id,username,room);
+      socket.join(user.room)
+
+      //emits to current user
+      socket.emit('message',formatMessage(bot,"Welcome Rajagirians...")); // emits to single user
+      
+      //broadcast to all users
+      socket.broadcast.to(user.room).emit('message',formatMessage(bot,user.username+" has joined everybody.."));// broadcast or emit to all users
+
+      socket.on('chatMessage',(msgobj)=>{
+        if (msgobj.message != '') {
+          socket.broadcast.to(user.room).emit('messageToAll',msgobj);
+          let docRef = firebasecfg.db.collection(user.room).doc(room.trim()+'doc');
+          let store_user = docRef.set({
+            name:username,
+            message:msgobj.message,
+            time:msgobj.time
+
+          })
+        } 
+      });
+      
+      io.to(obj.chatroom).emit('roomUsers',{room:obj.chatroom,users:getRoomUsers(obj.chatroom)});
+      
+
+      
+    });
+    //calls when cliet disconnects
+    socket.on('disconnect',()=>{
+      
+      io.to(obj.chatroom).emit('message', formatMessage(bot, obj.username+" left from the chat")) ;// broadcast or emit to all users
+      io.to(obj.chatroom).emit('roomUsers',{room:obj.chatroom,users:getRoomUsers(obj.chatroom)});
+    });
+ 
+    console.log("new client connected");
+
+    
+
+    
+});
+
+
+/**
+ * Listen on provided port, on all network interfaces.
+ */
+
+server.listen(port);
+server.on('error', onError);
+server.on('listening', onListening);
+
+/**
+ * Normalize a port into a number, string, or false.
+ */
+
+function normalizePort(val) {
+  var port = parseInt(val, 10);
+
+  if (isNaN(port)) {
+    // named pipe
+    return val;
+  }
+
+  if (port >= 0) {
+    // port number
+    return port;
+  }
+
+  return false;
+}
+
+/**
+ * Event listener for HTTP server "error" event.
+ */
+
+function onError(error) {
+  if (error.syscall !== 'listen') {
+    throw error;
+  }
+
+  var bind = typeof port === 'string'
+    ? 'Pipe ' + port
+    : 'Port ' + port;
+
+  // handle specific listen errors with friendly messages
+  switch (error.code) {
+    case 'EACCES':
+      console.error(bind + ' requires elevated privileges');
+      process.exit(1);
+      break;
+    case 'EADDRINUSE':
+      console.error(bind + ' is already in use');
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
+}
+
+/**
+ * Event listener for HTTP server "listening" event.
+ */
+
+function onListening() {
+  var addr = server.address();
+  var bind = typeof addr === 'string'
+    ? 'pipe ' + addr
+    : 'port ' + addr.port;
+  debug('Listening on ' + bind);
+}
